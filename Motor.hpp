@@ -103,6 +103,18 @@ private:
         }
     }
 
+    void initBaseRPM(pros::v5::MotorGears gearset) {
+        switch (gearset) {
+            case pros::v5::MotorGears::red: base_rpm = 100.0; break;
+            case pros::v5::MotorGears::green: base_rpm = 200.0; break;
+            case pros::v5::MotorGears::blue: base_rpm = 600.0; break;
+            default: base_rpm = 600.0; break;
+        }
+
+        kV_low = 10650.0 / base_rpm;
+        kV_high = 12100.0 / (base_rpm * 1.1333333333333333);
+    }
+
 public:
     T_Motor(int port, pros::v5::MotorGears gearset = Aliases::Blue, bool reversed = false)
         : motor(port, gearset, Aliases::Counts),
@@ -117,20 +129,6 @@ public:
         control_task = new pros::Task(controlLoopTask, this, "T_MotorControl");
     }
 
-private:
-    void initBaseRPM(pros::v5::MotorGears gearset) {
-        switch (gearset) {
-            case pros::v5::MotorGears::red: base_rpm = 100.0; break;
-            case pros::v5::MotorGears::green: base_rpm = 200.0; break;
-            case pros::v5::MotorGears::blue: base_rpm = 600.0; break;
-            default: base_rpm = 600.0; break;
-        }
-
-        kV_low = 10650.0 / base_rpm;
-        kV_high = 12100.0 / (base_rpm * 1.1333333333333333);
-    }
-
-public:
     ~T_Motor() {
         running = false;
         pros::delay(20);
