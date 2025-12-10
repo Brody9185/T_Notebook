@@ -1,6 +1,6 @@
 #include "main.h"
 
-namespace Belt {
+namespace T_Lib {
     class pid{
         private:
         double kP;
